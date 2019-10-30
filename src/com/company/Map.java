@@ -3,8 +3,8 @@ package com.company;
 import java.util.*;
 
 public class Map {
-   private class Graph{
-       private class Node{
+    private class Graph{
+        private class Node{
            private String name;
            private HashSet<String> linkNames = new HashSet<String>(0);
            private HashMap<Node, Integer> links;
@@ -48,7 +48,7 @@ public class Map {
                this.name = name;
            }
        }
-       private class MetaInf {
+        private class MetaInf {
            public Node nodeParrent;
            public int totalWeight;
            MetaInf(Node nodeParrent, int totalWeight){
@@ -56,101 +56,153 @@ public class Map {
                this.totalWeight = totalWeight;
            }
        }
-       private HashSet<String> vertices;
-       private Node start;
-       public Graph(){
-           vertices = new HashSet<String>(0);
-           start = new Node();
-       }
+        private HashSet<String> vertices;
+        private Node start;
+        public Graph(){
+            vertices = new HashSet<String>(0);
+            start = null;
+        }
 
-       public boolean has(String name){
-           return vertices.contains(name);
-       }
+        public boolean has(String name){
+            return vertices.contains(name);
+        }
 
-       private Node find(String name){
-           if(!has(name))
-               return null;
-           HashSet<String> used = new HashSet<String>(0);
-           ArrayDeque<Node> childs = new ArrayDeque<Node>(0);
-           Node tmp = start;
-           while(tmp.getName() != name){
-               if(!used.contains(tmp.name)) {
-                   for (Node i : tmp.getLinks().keySet())
-                       childs.push(i);
-                   used.add(tmp.name);
-               }
-               tmp = childs.pop();
-           }
-           return tmp;
-       }
+        private Node find(String name){
+            if(!has(name))
+                return null;
+            HashSet<String> used = new HashSet<String>(0);
+            ArrayDeque<Node> childs = new ArrayDeque<Node>(0);
+            Node tmp = start;
+            while(tmp.getName() != name){
+                if(!used.contains(tmp.name)) {
+                    for (Node i : tmp.getLinks().keySet())
+                        childs.push(i);
+                    used.add(tmp.name);
+                }
+                tmp = childs.pop();
+            }
+            return tmp;
+        }
 
-       public boolean addLink(String firstPoint, String secondPoint, int weight){
-           if(!has(firstPoint) && !has(secondPoint))
-               return false;
-           if(has(firstPoint)){
-               Node tmp = find(firstPoint);
-               if(tmp.hasLink(secondPoint))
-                   return false;
-               tmp.addLink(new Node(secondPoint), weight);
-               vertices.add(secondPoint);
-           }
-           else if(has(secondPoint)){
-               Node tmp = find(secondPoint);
-               if(tmp.hasLink(firstPoint))
-                   return false;
-               tmp.addLink(new Node(firstPoint), weight);
-               vertices.add(firstPoint);
-           }
-           else{
-               find(firstPoint).addLink(find(secondPoint), weight);
-           }
-           return true;
-       }
+        public boolean addLink(String firstPoint, String secondPoint, int weight){
+            if(!has(firstPoint) && !has(secondPoint))
+                if(vertices.size() == 0){
+                    vertices.add(firstPoint);
+                    vertices.add(secondPoint);
+                    start = new Node(firstPoint);
+                    start.addLink(new Node(secondPoint), weight);
+                }else{
+                    return false;
+                }
+            if(has(firstPoint)){
+                Node tmp = find(firstPoint);
+                if(tmp.hasLink(secondPoint))
+                    return false;
+                tmp.addLink(new Node(secondPoint), weight);
+                vertices.add(secondPoint);
+            }
+            else if(has(secondPoint)){
+                Node tmp = find(secondPoint);
+                if(tmp.hasLink(firstPoint))
+                    return false;
+                tmp.addLink(new Node(firstPoint), weight);
+                vertices.add(firstPoint);
+            }
+            else{
+                find(firstPoint).addLink(find(secondPoint), weight);
+            }
+            return true;
+        }
 
-       public List<String> path(String from, String to){
-           HashMap<String, MetaInf> minPaths = new HashMap<String, MetaInf>(0);
-           HashSet<String> visited = new HashSet<String>(0);
-           ArrayDeque<Node> childs = new ArrayDeque<Node>(0);
-           Node tmp = null;
-           childs.push(find(from));
-           minPaths.put(from, new MetaInf(null, 0));
-           while(!childs.isEmpty()){
-               tmp = childs.pop();
-               if(!visited.contains(tmp.name)){
-                   for(Node i: tmp.getLinks().keySet()) {
-                       childs.push(i);
-                       if(minPaths.containsKey(i.name)){
-                           if(minPaths.get(i.name).totalWeight > minPaths.get(tmp.name).totalWeight + tmp.links.get(i))
+        public ArrayList<String> path(String from, String to){
+            HashMap<String, MetaInf> minPaths = new HashMap<String, MetaInf>(0);
+            HashSet<String> visited = new HashSet<String>(0);
+            ArrayDeque<Node> childs = new ArrayDeque<Node>(0);
+            Node tmp = null;
+            childs.push(find(from));
+            minPaths.put(from, new MetaInf(null, 0));
+            while(!childs.isEmpty()){
+                tmp = childs.pop();
+                if(!visited.contains(tmp.name)){
+                    for(Node i: tmp.getLinks().keySet()) {
+                        childs.push(i);
+                        if(minPaths.containsKey(i.name)){
+                            if(minPaths.get(i.name).totalWeight > minPaths.get(tmp.name).totalWeight + tmp.links.get(i))
                                 minPaths.put(i.name,
                                         new MetaInf(i,minPaths.get(tmp.name).totalWeight + tmp.links.get(i)));
-                       }else{
-                           minPaths.put(i.name,new MetaInf(tmp, tmp.links.get(i)));
-                       }
-                   }
-                   visited.add(tmp.name);
-               }
-           }
-           ArrayList<String> ans = new ArrayList<String>(0);
-           MetaInf curr = minPaths.get(to);
-           while(curr.nodeParrent != null){
-               ans.add(curr.nodeParrent.name);
-               curr = minPaths.get(curr.nodeParrent.name);
-           }
-           for(int i = 0; i < ans.size()/2; ++i){
-               String temp = ans.get(i);
-               ans.set(i, ans.get(ans.size()-1-i));
-               ans.set(ans.size()-1-i, temp);
-           }
-           return ans;
-       }
+                        }else{
+                            minPaths.put(i.name,new MetaInf(tmp, tmp.links.get(i)));
+                        }
+                    }
+                    visited.add(tmp.name);
+                }
+            }
+            ArrayList<String> ans = new ArrayList<String>(0);
+            MetaInf curr = minPaths.get(to);
+            while(curr.nodeParrent != null){
+                ans.add(curr.nodeParrent.name);
+                curr = minPaths.get(curr.nodeParrent.name);
+            }
+            for(int i = 0; i < ans.size()/2; ++i){
+                String temp = ans.get(i);
+                ans.set(i, ans.get(ans.size()-1-i));
+                ans.set(ans.size()-1-i, temp);
+            }
+            return ans;
+        }
 
-       public void merge(Graph second, String point1, String point2, int weight){
-           if(second.has(point2))
-               this.find(point1).addLink(second.find(point2), weight);
-           else
-               this.find(point2).addLink(second.find(point1), weight);
-           this.vertices.addAll(second.vertices);
-       }
-   }
+        public void merge(Graph second, String point1, String point2, int weight){
+            if(second.has(point2))
+                this.find(point1).addLink(second.find(point2), weight);
+            else
+                this.find(point2).addLink(second.find(point1), weight);
+            this.vertices.addAll(second.vertices);
+        }
+    }
+    ArrayList<Graph> graphs;
+    public Map(){
+        graphs = new ArrayList<Graph>(0);
+    }
 
+    private int find(String nodeName){
+        for(int i = 0; i < graphs.size(); ++i)
+            if(graphs.get(i).has(nodeName))
+                return i;
+        return -1;
+    }
+
+    public void addPath(String from, String to, int weight){
+        int indFirst = find(from);
+        int indSecond = find(to);
+        if( indFirst == -1 && indSecond == -1){
+            Graph tmp = new Graph();
+            tmp.addLink(from, to, weight);
+            graphs.add(tmp);
+        }
+        else if(indFirst == -1 || indFirst == indSecond){
+            graphs.get(indSecond).addLink(to, from, weight);
+        }
+        else if(indSecond == -1){
+            graphs.get(indFirst).addLink(from, to, weight);
+        }
+        else{
+            graphs.get(indFirst).merge(graphs.get(indSecond), from, to, weight);
+            graphs.remove(indSecond);
+        }
+    }
+
+    public ArrayList<String> getAllPlaces(){
+        ArrayList<String> ans = new ArrayList<String>(0);
+        for(Graph g: graphs){
+            ans.addAll(g.vertices);
+        }
+        return ans;
+    }
+
+    public ArrayList<String> generateShortWay(String from, String to){
+        int ind1 = find(from), ind2 = find(to);
+        if(ind1 != find(to) || ind1 == -1 || ind2 == -1)
+            return null;
+        return graphs.get(ind1).path(from, to);
+    }
 }
