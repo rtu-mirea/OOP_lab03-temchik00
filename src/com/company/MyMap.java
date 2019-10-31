@@ -1,8 +1,9 @@
 package com.company;
 
+import java.security.cert.TrustAnchor;
 import java.util.*;
 
-public class Map {
+public class MyMap {
     private class Graph{
         private class Node{
            private String name;
@@ -73,7 +74,7 @@ public class Map {
             HashSet<String> used = new HashSet<String>(0);
             ArrayDeque<Node> childs = new ArrayDeque<Node>(0);
             Node tmp = start;
-            while(tmp.getName() != name){
+            while(tmp.getName().compareTo(name) != 0){
                 if(!used.contains(tmp.name)) {
                     for (Node i : tmp.getLinks().keySet())
                         childs.push(i);
@@ -91,20 +92,25 @@ public class Map {
                     vertices.add(secondPoint);
                     start = new Node(firstPoint);
                     start.addLink(new Node(secondPoint), weight);
+                    return true;
                 }else{
                     return false;
                 }
             if(has(firstPoint)){
                 Node tmp = find(firstPoint);
-                if(tmp.hasLink(secondPoint))
-                    return false;
+                if(tmp.hasLink(secondPoint)){
+                    tmp.links.put(find(secondPoint), weight);
+                    return true;
+                }
                 tmp.addLink(new Node(secondPoint), weight);
                 vertices.add(secondPoint);
             }
             else if(has(secondPoint)){
                 Node tmp = find(secondPoint);
-                if(tmp.hasLink(firstPoint))
-                    return false;
+                if(tmp.hasLink(firstPoint)){
+                    tmp.links.put(find(firstPoint), weight);
+                    return true;
+                }
                 tmp.addLink(new Node(firstPoint), weight);
                 vertices.add(firstPoint);
             }
@@ -125,7 +131,8 @@ public class Map {
                 tmp = childs.pop();
                 if(!visited.contains(tmp.name)){
                     for(Node i: tmp.getLinks().keySet()) {
-                        childs.push(i);
+                        if(!visited.contains(i))
+                            childs.push(i);
                         if(minPaths.containsKey(i.name)){
                             if(minPaths.get(i.name).totalWeight > minPaths.get(tmp.name).totalWeight + tmp.links.get(i))
                                 minPaths.put(i.name,
@@ -138,6 +145,7 @@ public class Map {
                 }
             }
             ArrayList<String> ans = new ArrayList<String>(0);
+            ans.add(to);
             MetaInf curr = minPaths.get(to);
             while(curr.nodeParrent != null){
                 ans.add(curr.nodeParrent.name);
@@ -160,7 +168,7 @@ public class Map {
         }
     }
     ArrayList<Graph> graphs;
-    public Map(){
+    public MyMap(){
         graphs = new ArrayList<Graph>(0);
     }
 
