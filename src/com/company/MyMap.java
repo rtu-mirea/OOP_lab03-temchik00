@@ -120,12 +120,12 @@ public class MyMap {
                 tmp = childs.pop();
                 if(!visited.contains(tmp.name)){
                     for(Node i: tmp.getLinks().keySet()) {
-                        if(!visited.contains(i))
+                        if(!visited.contains(i.name) && !childs.contains(i))
                             childs.push(i);
                         if(minPaths.containsKey(i.name)){
                             if(minPaths.get(i.name).totalWeight > minPaths.get(tmp.name).totalWeight + tmp.links.get(i))
                                 minPaths.put(i.name,
-                                        new MetaInf(i,minPaths.get(tmp.name).totalWeight + tmp.links.get(i)));
+                                        new MetaInf(tmp,minPaths.get(tmp.name).totalWeight + tmp.links.get(i)));
                         }else{
                             minPaths.put(i.name,new MetaInf(tmp, tmp.links.get(i)));
                         }
