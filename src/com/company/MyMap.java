@@ -37,12 +37,12 @@ public class MyMap {
            }
 
            public void addLink(Node node, int weight){
-               if(this.links.containsKey(node))
-                   return;
+               if(!this.links.containsKey(node)) {
+                   this.linkNames.add(node.name);
+                   node.linkNames.add(this.name);
+               }
                this.links.put(node, weight);
                node.links.put(this, weight);
-               this.linkNames.add(node.name);
-               node.linkNames.add(this.name);
            }
 
            public void setName(String name) {
@@ -85,39 +85,28 @@ public class MyMap {
             return tmp;
         }
 
-        public boolean addLink(String firstPoint, String secondPoint, int weight){
-            if(!has(firstPoint) && !has(secondPoint))
-                if(vertices.size() == 0){
+        public void addLink(String firstPoint, String secondPoint, int weight){
+            if(!has(firstPoint) && !has(secondPoint)) {
+                if (vertices.size() == 0) {
                     vertices.add(firstPoint);
                     vertices.add(secondPoint);
                     start = new Node(firstPoint);
                     start.addLink(new Node(secondPoint), weight);
-                    return true;
-                }else{
-                    return false;
                 }
-            if(has(firstPoint)){
+            }
+            else if(has(firstPoint) && !has(secondPoint)){
                 Node tmp = find(firstPoint);
-                if(tmp.hasLink(secondPoint)){
-                    tmp.links.put(find(secondPoint), weight);
-                    return true;
-                }
                 tmp.addLink(new Node(secondPoint), weight);
                 vertices.add(secondPoint);
             }
-            else if(has(secondPoint)){
+            else if(!has(firstPoint) && has(secondPoint)){
                 Node tmp = find(secondPoint);
-                if(tmp.hasLink(firstPoint)){
-                    tmp.links.put(find(firstPoint), weight);
-                    return true;
-                }
                 tmp.addLink(new Node(firstPoint), weight);
                 vertices.add(firstPoint);
             }
             else{
                 find(firstPoint).addLink(find(secondPoint), weight);
             }
-            return true;
         }
 
         public ArrayList<String> path(String from, String to){

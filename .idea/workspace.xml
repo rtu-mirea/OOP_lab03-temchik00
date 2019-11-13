@@ -4,10 +4,16 @@
     <list default="true" id="40144c45-7512-4c23-8825-11a554262e62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MyMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/company/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/Admin.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/Admin.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/Client.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/Client.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph$MetaInf.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph$MetaInf.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph$Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph$Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap$Graph.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/MyMap.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/PizzaSystem.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/PizzaSystem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Lab-3/com/company/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Lab-3/com/company/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/company/MyMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/company/MyMap.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +84,7 @@
       <updated>1572383646484</updated>
       <workItem from="1572510651038" duration="1923000" />
       <workItem from="1572515547123" duration="105000" />
-      <workItem from="1572515696137" duration="5107000" />
+      <workItem from="1572515696137" duration="5693000" />
     </task>
     <servers />
   </component>
@@ -97,5 +103,12 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((HashMap)((Node)((Graph)((ArrayList)((MyMap)((PizzaSystem)this).myMap).graphs).get(0)).start).links).entrySet().toArray()[1]" custom="com.company.MyMap.Graph.Node,com.company.MyMap,java.util.HashMap,com.company.MyMap.Graph,com.company.PizzaSystem,java.util.ArrayList" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
